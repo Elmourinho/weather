@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .date-picker {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 10px;
+        }
+
+        .spacer {
+            height: 20px;
+        }
+    </style>
+
+    <script>
+        function filterTable() {
+            var input = document.getElementById("placeFilter");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("forecastTable");
+
+            if (table) {
+                var tr = table.getElementsByTagName("tr");
+                for (var i = 0; i < tr.length; i++) {
+                    var placeName = tr[i].getAttribute("data-place");
+                    if (placeName) {
+                        if (placeName.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div th:switch="${forecasts}">
+    <h2 th:case="null">No forecasts!</h2>
+    <div th:case="*">
+        <h2>Weather forecast</h2>
+
+        <label for="placeFilter">Search Place:</label>
+        <input type="text" id="placeFilter" oninput="filterTable()" placeholder="Enter place name...">
+        <div class="spacer"></div>
+
+        <table id="forecastTable">
+            <thead>
+            <tr>
+                <th>Place name</th>
+                <th>Day phenomenon</th>
+                <th>Maximum temperature</th>
+                <th>Night phenomenon</th>
+                <th>Minimum temperature</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="forecast : ${forecasts}" th:attr="data-place=${forecast.id.placeName}">
+                <td th:text="${forecast.id.placeName}"></td>
+                <td th:text="${forecast.dayPhenomenon}"></td>
+                <td th:text="${forecast.tempMax}"></td>
+                <td th:text="${forecast.nightPhenomenon}"></td>
+                <td th:text="${forecast.tempMin}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form action="/index" method="get" class="date-picker">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
