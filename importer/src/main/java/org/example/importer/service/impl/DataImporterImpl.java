@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class DataImporterImpl implements DataImporter {
     private final ForecastRepository forecastRepository;
 
     @Override
-    @Scheduled(fixedRate = 30 * 60 * 1000) // 30 minutes
+    @Scheduled(fixedRate = 30, timeUnit = TimeUnit.MINUTES)
     public void importData() {
         log.info("Fetching xml data...");
         Forecasts forecasts = dataFetcher.fetchData();

@@ -33,7 +33,8 @@ App will be available at:
 ```bash
 http://localhost:8081/index
 ```
-
+Our view:
+![Alt text](web/src/main/resources/web-screen.png)
 
 ## General thoughts:
 I decided to move core things to common module, since it is being used by another modules as well. In Importer module I used JAXB library for getting and parsing xml objects.
